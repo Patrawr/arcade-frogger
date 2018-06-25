@@ -1,14 +1,14 @@
 let allEnemies = [];
 // Enemies our player must avoid
 class Enemy {
-    constructor(x, y) {
+    constructor(col, row) {
         // Variables applied to each of our instances go here,
         // we've provided one for you to get started
         // The image/sprite for our enemies, this uses
         // a helper we've provided to easily load images
         this.sprite = 'images/enemy-bug.png';
-        this.x = x;
-        this.y = y;
+        this.col = col;
+        this.row = row;
         this.speed = 2;
     }
     // Update the enemy's position, required method for game
@@ -20,7 +20,7 @@ class Enemy {
     }
     // Draw the enemy on the screen, required method for game
     render() {
-        ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+        ctx.drawImage(Resources.get(this.sprite), this.col * 101, this.row * 83 - 20);
     }
 }
 
@@ -30,16 +30,16 @@ class Enemy {
 // This class requires an update(), render() and
 // a handleInput() method.
 class Player {
-    constructor(x, y) {
+    constructor(col, row) {
         this.sprite = 'images/char-boy.png';
-        this.x = x;
-        this.y = y;
+        this.col = col;
+        this.row = row;
     }
 
-    update() {};
+    update(col, row) {};
 
     render() {
-        ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+        ctx.drawImage(Resources.get(this.sprite), this.col * 101, this.row * 83 - 30);
     }
 
     handleInput(keyCode) {
@@ -51,8 +51,8 @@ class Player {
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
-allEnemies.push(new Enemy(1,2));
-let player = new Player(5,3);
+allEnemies.push(new Enemy(0,1));
+let player = new Player(3,5);
 
 
 // This listens for key presses and sends the keys to your
