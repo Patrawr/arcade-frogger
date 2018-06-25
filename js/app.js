@@ -37,14 +37,33 @@ class Player {
         this.row = row;
     }
 
-    update(col, row) {};
+    update(col = 0, row = 0) {
+        this.col += col;
+        this.row += row;
+    };
 
     render() {
         ctx.drawImage(Resources.get(this.sprite), this.col * 101, this.row * 83 - 30);
     }
 
     handleInput(keyCode) {
+        switch (keyCode) {
+           case 'left': 
+              this.update(-1);
+              break;
 
+           case 'right': 
+              this.update(1);
+              break;
+              
+           case 'up':
+              this.update(0, -1);
+              break;
+              
+           case 'down':
+              this.update(0, 1);
+              break;
+        }
     };
 }
 
