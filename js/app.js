@@ -9,6 +9,8 @@ class Enemy {
         this.sprite = 'images/enemy-bug.png';
         this.col = col;
         this.row = row;
+        this.x = 0;
+        this.y = 0;
         this.speed = 2;
         this.width = 100;
     }
@@ -21,19 +23,23 @@ class Enemy {
         if (this.col > numCols) {
             this.col = -1;
         }
+
         this.col += this.speed * dt;
+        
+        this.x = this.col * 101;
+        this.y = this.row * 83 - 20;
         
         this.checkCollisions();
     }
     // Draw the enemy on the screen, required method for game
     render() {
-        ctx.drawImage(Resources.get(this.sprite), this.col * 101, this.row * 83 - 20);
+        ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
     }
 
     checkCollisions() {
         if (this.row === player.row &&
-            ((this.col >= player.col && this.col <= player.col + player.width) ||
-            (this.col + this.width >= player.col && this.col + this.width <= player.col + player.width))
+            ((this.x >= player.x && this.x <= player.x + player.width) ||
+            (this.x + this.width >= player.x && this.x + this.width <= player.x + player.width))
         ) {
             console.log("Collision!!");
         }
