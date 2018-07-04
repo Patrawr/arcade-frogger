@@ -17,6 +17,9 @@ class Enemy {
         // You should multiply any movement by the dt parameter
         // which will ensure the game runs at the same speed for
         // all computers.
+        if (this.col > numCols) {
+            this.col = -1;
+        }
         this.col += this.speed * dt;
     }
     // Draw the enemy on the screen, required method for game
