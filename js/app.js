@@ -10,6 +10,7 @@ class Enemy {
         this.col = col;
         this.row = row;
         this.speed = 2;
+        this.width = 100;
     }
     // Update the enemy's position, required method for game
     // Parameter: dt, a time delta between ticks
@@ -21,10 +22,21 @@ class Enemy {
             this.col = -1;
         }
         this.col += this.speed * dt;
+        
+        this.checkCollisions();
     }
     // Draw the enemy on the screen, required method for game
     render() {
         ctx.drawImage(Resources.get(this.sprite), this.col * 101, this.row * 83 - 20);
+    }
+
+    checkCollisions() {
+        if (this.row === player.row &&
+            ((this.col >= player.col && this.col <= player.col + player.width) ||
+            (this.col + this.width >= player.col && this.col + this.width <= player.col + player.width))
+        ) {
+            console.log("Collision!!");
+        }
     }
 }
 
@@ -38,15 +50,23 @@ class Player {
         this.sprite = 'images/char-boy.png';
         this.col = col;
         this.row = row;
+        this.x = 0;
+        this.y = 0;
+        this.height = 100;
+        this.width = 100;
     }
+
 
     update(col = 0, row = 0) {
         this.col += col;
         this.row += row;
+
+        this.x = this.col * 101;
+        this.y = this.row * 83 - 30;
     };
 
     render() {
-        ctx.drawImage(Resources.get(this.sprite), this.col * 101, this.row * 83 - 30);
+        ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
     }
 
     handleInput(keyCode) {
