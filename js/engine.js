@@ -12,6 +12,8 @@
  * This engine makes the canvas' context (ctx) object globally available to make 
  * writing app.js a little simpler to work with.
  */
+numRows = 6,
+numCols = 5;
 
 var Engine = (function(global) {
     /* Predefine the variables we'll be using within this scope,
@@ -114,8 +116,7 @@ var Engine = (function(global) {
                 'images/grass-block.png',   // Row 1 of 2 of grass
                 'images/grass-block.png'    // Row 2 of 2 of grass
             ],
-            numRows = 6,
-            numCols = 5,
+
             row, col;
         
         // Before drawing, clear existing canvas

@@ -48,21 +48,29 @@ class Player {
 
     handleInput(keyCode) {
         switch (keyCode) {
-           case 'left': 
-              this.update(-1);
-              break;
+            case 'left':
+                if (this.col > 0) {
+                    this.update(-1);
+                }
+                break;
 
-           case 'right': 
-              this.update(1);
-              break;
-              
-           case 'up':
-              this.update(0, -1);
-              break;
-              
-           case 'down':
-              this.update(0, 1);
-              break;
+            case 'right':
+                if (this.col < numCols - 1) {
+                    this.update(1);
+                }
+                break;
+
+            case 'up':
+                if (this.row > 0) {
+                    this.update(0, -1);
+                }
+                break;
+
+            case 'down':
+                if (this.row < numRows -1) {
+                    this.update(0, 1);
+                }
+                break;
         }
     };
 }
