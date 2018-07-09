@@ -1,5 +1,5 @@
-let allEnemies = [];
 // Enemies our player must avoid
+let allEnemies = [];
 class Enemy {
     constructor(col = 0, row = 1, speed = 1) {
         //loading the image for the enemy
@@ -14,7 +14,7 @@ class Enemy {
     // Update the enemy's position, required method for game
     // Parameter: dt, a time delta between ticks
     update(dt) {
-        //checking if enemy has gone off screen, if so rest to left side of canvas (offscreen)
+        //checking if enemy has gone off screen, if so reset to left side of canvas (offscreen)
         if (this.col > numCols) {
             this.col = -1;
         }
@@ -83,17 +83,27 @@ class Player {
         ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
     }
 
-    //resets the player
+    //resets the player randomly
     reset() {
         this.col = getRndInteger(0,4);
         this.row = getRndInteger(4,5);
+        //resets the timer
         this.timer = 0;
+        let winbar = document.getElementById("win-bar");
+
+        //win message will linger for a little after the player is reset
+        if (winbar != null) {
+            setTimeout(() => winbar.style.display = "none"
+            , 1500);
+        }
     }
 
     
     checkWin() {
         //if player has reached the top, then they've won!
         if (this.row === 0 && this.timer === 0) {
+            document.getElementById("win-bar").style.display = "block";
+            //let the player stay in the top    
             this.timer = setTimeout(reset, 700);
         }
     }
@@ -137,6 +147,7 @@ function spawnEnemies(amount) {
     }
 }
 
+//spawns enemies and gives them random location and speed
 spawnEnemies(4);
 let player = new Player();
 
@@ -145,6 +156,7 @@ function reset() {
     player.reset();
 }
 
+//utility function for generating random integers in a range
 function getRndInteger(min, max) {
     return Math.floor(Math.random() * (max - min + 1) ) + min;
 }
