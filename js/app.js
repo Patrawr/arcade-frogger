@@ -9,7 +9,7 @@ class Enemy {
         this.x = 0;
         this.y = 0;
         this.speed = 2;
-        this.width = 100;
+        this.width = 70;
     }
     // Update the enemy's position, required method for game
     // Parameter: dt, a time delta between ticks
@@ -50,7 +50,7 @@ class Enemy {
 
 //player class that handles position and logic for player character
 class Player {
-    constructor(col, row) {
+    constructor(col = 0 , row = 0) {
         this.sprite = 'images/char-boy.png';
         this.col = col;
         this.row = row;
@@ -58,6 +58,7 @@ class Player {
         this.y = 0;
         this.height = 100;
         this.width = 100;
+        this.timer = 0;
 
         this.reset();
     }
@@ -69,6 +70,9 @@ class Player {
 
         this.x = this.col * 101;
         this.y = this.row * 83 - 30;
+
+        //checks if the player has won by reaching the water
+        this.checkWin();
     };
 
     render() {
@@ -79,6 +83,14 @@ class Player {
     reset() {
         this.col = getRndInteger(0,4);
         this.row = getRndInteger(4,5);
+        this.timer = 0;
+    }
+
+    
+    checkWin() {
+        if (this.row === 0 && this.timer === 0) {
+            this.timer = setTimeout(reset, 700);
+        }
     }
     
 
@@ -116,7 +128,7 @@ class Player {
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
 allEnemies.push(new Enemy(0,1));
-let player = new Player(0,0);
+let player = new Player();
 
 //resets the game
 function reset() {
