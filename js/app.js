@@ -63,11 +63,15 @@ class Player {
         this.reset();
     }
 
-
+    //updates row and column and converts to x and y abosolute coordinates for rendering
     update(col = 0, row = 0) {
+        
         this.col += col;
-        this.row += row;
-
+        //if player has won, do not let them leave until reset
+        if (this.timer === 0) {
+            this.row += row;
+        }
+        
         this.x = this.col * 101;
         this.y = this.row * 83 - 30;
 
@@ -88,6 +92,7 @@ class Player {
 
     
     checkWin() {
+        //if player has reached the top, then they've won!
         if (this.row === 0 && this.timer === 0) {
             this.timer = setTimeout(reset, 700);
         }
@@ -128,11 +133,11 @@ class Player {
 function spawnEnemies(amount) {
     for (let i = 0; i < amount; i++) {
         //randomizing col, row and speed
-        allEnemies.push(new Enemy(getRndInteger(0,4), getRndInteger(1,3), getRndInteger(2,4)));
+        allEnemies.push(new Enemy(getRndInteger(0,4), getRndInteger(1,3), getRndInteger(2,3)));
     }
 }
 
-spawnEnemies(1);
+spawnEnemies(4);
 let player = new Player();
 
 //resets the game
