@@ -1,14 +1,14 @@
 let allEnemies = [];
 // Enemies our player must avoid
 class Enemy {
-    constructor(col, row) {
+    constructor(col = 0, row = 1, speed = 1) {
         //loading the image for the enemy
         this.sprite = 'images/enemy-bug.png';
         this.col = col;
         this.row = row;
         this.x = 0;
         this.y = 0;
-        this.speed = 2;
+        this.speed = speed;
         this.width = 70;
     }
     // Update the enemy's position, required method for game
@@ -124,10 +124,15 @@ class Player {
 }
 
 
-// Now instantiate your objects.
-// Place all enemy objects in an array called allEnemies
-// Place the player object in a variable called player
-allEnemies.push(new Enemy(0,1));
+//spawning enemines during init
+function spawnEnemies(amount) {
+    for (let i = 0; i < amount; i++) {
+        //randomizing col, row and speed
+        allEnemies.push(new Enemy(getRndInteger(0,4), getRndInteger(1,3), getRndInteger(2,4)));
+    }
+}
+
+spawnEnemies(1);
 let player = new Player();
 
 //resets the game
