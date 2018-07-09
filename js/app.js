@@ -2,10 +2,7 @@ let allEnemies = [];
 // Enemies our player must avoid
 class Enemy {
     constructor(col, row) {
-        // Variables applied to each of our instances go here,
-        // we've provided one for you to get started
-        // The image/sprite for our enemies, this uses
-        // a helper we've provided to easily load images
+        //loading the image for the enemy
         this.sprite = 'images/enemy-bug.png';
         this.col = col;
         this.row = row;
@@ -17,15 +14,16 @@ class Enemy {
     // Update the enemy's position, required method for game
     // Parameter: dt, a time delta between ticks
     update(dt) {
-        // You should multiply any movement by the dt parameter
-        // which will ensure the game runs at the same speed for
-        // all computers.
+        //checking if enemy has gone off screen, if so rest to left side of canvas (offscreen)
         if (this.col > numCols) {
             this.col = -1;
         }
 
+        //add to the y position based on speed and univerals delta
+        //speed can differ between enemies but they should all behave consistantly across devices
         this.col += this.speed * dt;
-        
+
+        //convert rows and columns to absolute x and y positions to be rendered onscreen
         this.x = this.col * 101;
         this.y = this.row * 83 - 20;
         
@@ -36,21 +34,21 @@ class Enemy {
         ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
     }
 
+    //collision checker checks if player and enemy are in the same row and if any part
+    //of the enemy intersects with any part of the player (based on position and width)
     checkCollisions() {
         if (this.row === player.row &&
             ((this.x >= player.x && this.x <= player.x + player.width) ||
             (this.x + this.width >= player.x && this.x + this.width <= player.x + player.width))
         ) {
             console.log("Collision!!");
+            reset();
         }
     }
 }
 
 
-
-// Now write your own player class
-// This class requires an update(), render() and
-// a handleInput() method.
+//player class that handles position and logic for player character
 class Player {
     constructor(col, row) {
         this.sprite = 'images/char-boy.png';
@@ -60,6 +58,8 @@ class Player {
         this.y = 0;
         this.height = 100;
         this.width = 100;
+
+        this.reset();
     }
 
 
@@ -74,6 +74,13 @@ class Player {
     render() {
         ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
     }
+
+    //resets the player
+    reset() {
+        this.col = getRndInteger(0,4);
+        this.row = getRndInteger(4,5);
+    }
+    
 
     handleInput(keyCode) {
         switch (keyCode) {
@@ -109,9 +116,16 @@ class Player {
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
 allEnemies.push(new Enemy(0,1));
-let player = new Player(3,5);
+let player = new Player(0,0);
 
+//resets the game
+function reset() {
+    player.reset();
+}
 
+function getRndInteger(min, max) {
+    return Math.floor(Math.random() * (max - min + 1) ) + min;
+}
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
 document.addEventListener('keyup', function(e) {
