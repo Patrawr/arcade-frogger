@@ -1,13 +1,31 @@
+//enforce strict mode for ES5
+"use strict";
+
 // Enemies our player must avoid
 let allEnemies = [];
-class Enemy {
-    constructor(col = 0, row = 1, speed = 1) {
-        //loading the image for the enemy
-        this.sprite = 'images/enemy-bug.png';
+
+let CONSTANTS = {
+    "COL_MULT" : 101,
+    "ROW_MULT" : 83
+}
+// @description Base class of a moving object
+class movingObject {
+    constructor(col = 0, row = 0, sprite) {
+        this.sprite = sprite;
         this.col = col;
         this.row = row;
         this.x = 0;
         this.y = 0;
+    }
+
+    render() {
+        ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+    }
+}
+class Enemy extends movingObject {
+    constructor(col = 0, row = 1, speed = 1) {
+        super(col, row, 'images/enemy-bug.png');
+        
         this.speed = speed;
         this.width = 70;
     }
@@ -24,14 +42,10 @@ class Enemy {
         this.col += this.speed * dt;
 
         //convert rows and columns to absolute x and y positions to be rendered onscreen
-        this.x = this.col * 101;
-        this.y = this.row * 83 - 20;
+        this.x = this.col * CONSTANTS.COL_MULT;
+        this.y = this.row * CONSTANTS.ROW_MULT - 20;
         
         this.checkCollisions();
-    }
-    // Draw the enemy on the screen, required method for game
-    render() {
-        ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
     }
 
     //collision checker checks if player and enemy are in the same row and if any part
@@ -49,13 +63,11 @@ class Enemy {
 
 
 //player class that handles position and logic for player character
-class Player {
+class Player extends movingObject {
     constructor(col = 0 , row = 0) {
-        this.sprite = 'images/char-boy.png';
-        this.col = col;
-        this.row = row;
-        this.x = 0;
-        this.y = 0;
+        //calling super constructor, movingObject
+        super (col, row, 'images/char-boy.png');
+        
         this.height = 100;
         this.width = 100;
         this.timer = 0;
@@ -72,16 +84,13 @@ class Player {
             this.row += row;
         }
         
-        this.x = this.col * 101;
-        this.y = this.row * 83 - 30;
+        this.x = this.col * CONSTANTS.COL_MULT;
+        this.y = this.row * CONSTANTS.ROW_MULT - 30;
 
         //checks if the player has won by reaching the water
         this.checkWin();
     };
 
-    render() {
-        ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-    }
 
     //resets the player randomly
     reset() {
